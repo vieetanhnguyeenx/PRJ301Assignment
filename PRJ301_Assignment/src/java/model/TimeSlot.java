@@ -13,6 +13,17 @@ import java.util.ArrayList;
 public class TimeSlot {
     private int id;
     private String description;
+    private String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    
     private ArrayList<Session> sessions = new ArrayList<>();
 
     public int getId() {

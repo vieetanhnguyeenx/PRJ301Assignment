@@ -4,9 +4,17 @@
         <servlet-name>LecturerTimetable</servlet-name>
         <servlet-class>controller.LecturerTimetable</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ScheduleOfWeekStudent</servlet-name>
+        <servlet-class>controller.ScheduleOfWeekStudent</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LecturerTimetable</servlet-name>
         <url-pattern>/lecturer-timetable</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ScheduleOfWeekStudent</servlet-name>
+        <url-pattern>/scheduleofweek</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

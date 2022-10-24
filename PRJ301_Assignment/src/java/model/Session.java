@@ -21,8 +21,20 @@ public class Session {
     private Group group;
     private int index;
     private boolean attandated; 
+    private Attandance atten = new Attandance();
     private ArrayList<Attandance> attandances = new ArrayList<>();
 
+    public Attandance getAtten() {
+        return atten;
+    }
+
+    public void setAtten(Attandance atten) {
+        this.atten = atten;
+    }
+    
+    
+    
+    
     public LocalDate getDate() {
         return date;
     }
@@ -96,11 +108,22 @@ public class Session {
         this.attandances = attandances;
     }
     
-    public String getAttandenString() {
-        if (attandated) {
-            return "Attandated";
-        } else {
-            return "Not yet";
+    public String isAttended() {
+        String s;
+        if (attandated == true && atten.getRecordTime() != null && atten.isPresent() == true) {
+            s = "Attended";
+        } else if (attandated == true && atten.getRecordTime() != null && atten.isPresent() == false) {
+            s = "Absent";
+        } else{
+            s = "Not yet";
         }
+        return s;
     }
+
+    @Override
+    public String toString() {
+        return id + "\t" + date + "\t" + group.getName() + "\t" + group.getSubject().getName() + "\t" + lecturer.getName() + "\t" + timeslot.getName() + "\t" + isAttended();
+    }
+    
+    
 }

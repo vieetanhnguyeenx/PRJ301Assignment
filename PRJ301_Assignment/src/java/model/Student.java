@@ -107,5 +107,11 @@ public class Student {
     public void setAttandances(ArrayList<Attandance> attandances) {
         this.attandances = attandances;
     }
+
+    @Override
+    public String toString() {
+        return "Student{" + "id=" + id + ", name=" + name + ", login=" + login + ", imgUrl=" + imgUrl + ", email=" + email + ", phone=" + phone + ", gender=" + gender + ", dob=" + dob + ", groups=" + groups + ", attandances=" + attandances + '}';
+    }
+    
     
 }

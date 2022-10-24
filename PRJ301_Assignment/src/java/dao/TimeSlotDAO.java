@@ -22,7 +22,7 @@ public class TimeSlotDAO {
     public ArrayList<TimeSlot> getAllTimeSlot() {
         ArrayList<TimeSlot> list = new ArrayList<>();
         try {
-            String sql = "select tid, [description] from TimeSlot";
+            String sql = "select tid, [description], tname from TimeSlot";
             Connection conn = new DBContext().getConnection();
             PreparedStatement ps = conn.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
@@ -30,6 +30,7 @@ public class TimeSlotDAO {
                 TimeSlot ts = new TimeSlot();
                 ts.setId(rs.getInt(1));
                 ts.setDescription(rs.getString(2));
+                ts.setName(rs.getString(3));
                 list.add(ts);
             }
         } catch (Exception ex) {
