@@ -13,14 +13,14 @@ import java.util.ArrayList;
  * @author Ngo Tung Son
  */
 public class Session {
-    private int id;
-    private Lecturer lecturer;
-    private Room room;
-    private TimeSlot timeslot;
-    private LocalDate date;
+    private int id; // ok
+    private Lecturer lecturer; //ok
+    private Room room; //ok
+    private TimeSlot timeslot; //ok
+    private LocalDate date; //ok
     private Group group;
-    private int index;
-    private boolean attandated; 
+    private int index; // ok
+    private boolean attandated; // ok
     private Attandance atten = new Attandance();
     private ArrayList<Attandance> attandances = new ArrayList<>();
 
@@ -32,7 +32,9 @@ public class Session {
         this.atten = atten;
     }
     
-    
+    public boolean getAttandated() {
+        return attandated;
+    }
     
     
     public LocalDate getDate() {
@@ -123,7 +125,11 @@ public class Session {
     @Override
     public String toString() {
         return id + "\t" + date + "\t" + group.getName() + "\t" + group.getSubject().getName() + "\t" + lecturer.getName() + "\t" + timeslot.getName() + "\t" + isAttended();
+        
     }
     
+    public String getSes() {
+        return id + "\t" + date + "\t" + group.getName() + "\t" + group.getSubject().getName() + "\t" + lecturer.getName() + "\t" + timeslot.getName() ;
+    }
     
 }

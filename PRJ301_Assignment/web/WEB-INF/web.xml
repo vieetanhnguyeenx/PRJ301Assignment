@@ -8,6 +8,14 @@
         <servlet-name>ScheduleOfWeekStudent</servlet-name>
         <servlet-class>controller.ScheduleOfWeekStudent</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AttendentTaking</servlet-name>
+        <servlet-class>controller.AttendentTaking</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AttendanceReport</servlet-name>
+        <servlet-class>controller.AttendanceReport</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LecturerTimetable</servlet-name>
         <url-pattern>/lecturer-timetable</url-pattern>
@@ -15,6 +23,14 @@
     <servlet-mapping>
         <servlet-name>ScheduleOfWeekStudent</servlet-name>
         <url-pattern>/scheduleofweek</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AttendentTaking</servlet-name>
+        <url-pattern>/attendent_taking</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AttendanceReport</servlet-name>
+        <url-pattern>/attendance_report</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

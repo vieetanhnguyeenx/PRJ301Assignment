@@ -57,6 +57,23 @@ public class Attandance {
         this.recordTime = recordTime;
     }
     
+    public String isPresentString() {
+        String s;
+        if(present == true && recordTime != null && session.getAttandated() == true) {
+            s = "Present";
+        } else if (present == false && recordTime != null && session.getAttandated() == true) {
+            s = "Absent";
+        } else {
+            s = "Future";
+        }
+        return s;
+    }
+    
+    @Override
+    public String toString() {
+        return "Attandance{" + "session=" + session + ", present=" + present + ", description=" + description + ", recordTime=" + recordTime + '}';
+    }
+    
     
     
     

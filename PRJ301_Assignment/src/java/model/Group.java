@@ -4,6 +4,7 @@
  */
 package model;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 /**
@@ -11,12 +12,34 @@ import java.util.ArrayList;
  * @author Ngo Tung Son
  */
 public class Group {
-    private int id;
-    private String name;
+    private int id; //ok
+    private String name; // ok
     private ArrayList<Student> students = new ArrayList<>();
-    private Subject subject;
+    private Subject subject; // ok
     private Lecturer supervisor;
+    private Term term; // ok
+    private LocalDate startDate;
 
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+    
+    
+    
+    public Term getTerm() {
+        return term;
+    }
+
+    public void setTerm(Term term) {
+        this.term = term;
+    }
+    
+    
+    
     public int getId() {
         return id;
     }

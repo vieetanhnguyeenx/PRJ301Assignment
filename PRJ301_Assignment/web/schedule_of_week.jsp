@@ -58,8 +58,7 @@
                                         (${ss.isAttended()}) <br/>
                                         ${s.description}
                                     </c:if>
-                                    
-                                </c:forEach>
+                                </c:forEach>                                       
                             </td>
                         </c:forEach>
                     </tr>

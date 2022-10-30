@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 
 import java.time.LocalDate;
@@ -217,14 +218,138 @@ public class SessionDAO {
         return sesList;
     }
 
-    public static void main(String[] args) {
-        LocalDate from = LocalDate.parse("2022-10-09");
-        LocalDate to = LocalDate.parse("2022-10-27");
-        ArrayList<Session> sesList = new SessionDAO().getSessionByStudentId(2, from, to);
-        for (Session s : sesList) {
-            System.out.println(s.toString());
+    public Session getSessionForAttending(int id) {
+        try {
+            String sql = "SELECT ses.sesid,ses.[index],ses.date,ses.attanded\n"
+                    + ",g.gid,g.gname\n"
+                    + ",r.rid,r.rname\n"
+                    + ",t.tid,t.[description] tdescription, t.tname\n"
+                    + ",l.lid,l.lname\n"
+                    + ",sub.subid,sub.subname\n"
+                    + ",s.stdid,s.stdname, s.imgUrl\n"
+                    + ",ISNULL(a.present,0) present, ISNULL(a.[description],'') [description]\n"
+                    + "FROM [Session] ses\n"
+                    + "INNER JOIN Room r ON r.rid = ses.rid\n"
+                    + "INNER JOIN TimeSlot t ON t.tid = ses.tid\n"
+                    + "INNER JOIN Lecturer l ON l.lid = ses.lid\n"
+                    + "INNER JOIN [Group] g ON g.gid = ses.gid\n"
+                    + "INNER JOIN [Subject] sub ON sub.subid = g.subid\n"
+                    + "INNER JOIN [Student_Group] sg ON sg.gid = g.gid\n"
+                    + "INNER JOIN [Student] s ON s.stdid = sg.stdid\n"
+                    + "LEFT JOIN Attandance a ON s.stdid = a.stdid AND ses.sesid = a.sesid\n"
+                    + "WHERE ses.sesid = ?";
+
+            Connection conn = new DBContext().getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            Session ses = null;
+            while (rs.next()) {
+                if (ses == null) {
+                    ses = new Session();
+                    Room r = new Room();
+                    r.setId(rs.getInt("rid"));
+                    r.setName(rs.getString("rname"));
+                    ses.setRoom(r);
+
+                    TimeSlot t = new TimeSlot();
+                    t.setId(rs.getInt("tid"));
+                    t.setDescription(rs.getString("tdescription"));
+                    t.setName(rs.getString("tname"));
+                    ses.setTimeslot(t);
+
+                    Lecturer l = new Lecturer();
+                    l.setId(rs.getInt("lid"));
+                    l.setName(rs.getString("lname"));
+                    ses.setLecturer(l);
+
+                    Group g = new Group();
+                    g.setId(rs.getInt("gid"));
+                    g.setName(rs.getString("gname"));
+                    ses.setGroup(g);
+
+                    Subject sub = new Subject();
+                    sub.setId(rs.getInt("subid"));
+                    sub.setName(rs.getString("subname"));
+                    g.setSubject(sub);
+
+                    ses.setId(rs.getInt("sesid"));
+                    ses.setDate(rs.getDate("date").toLocalDate());
+                    ses.setIndex(rs.getInt("index"));
+                    ses.setAttandated(rs.getBoolean("attanded"));
+                }
+                Student s = new Student();
+                s.setId(rs.getInt("stdid"));
+                s.setName(rs.getString("stdname"));
+                s.setImgUrl(rs.getString("imgUrl"));
+
+                Attandance a = new Attandance();
+                a.setStudent(s);
+                a.setSession(ses);
+                a.setPresent(rs.getBoolean("present"));
+                a.setDescription(rs.getString("description"));
+                ses.getAttandances().add(a);
+            }
+            return ses;
+        } catch (Exception ex) {
+            Logger.getLogger(SessionDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+        return null;
+    }
+
+    public void updateAttendent(Session model) {
+        try {
+            String sql = "UPDATE [Session] SET attanded = 1 WHERE sesid = ?";
+            Connection conn = new DBContext().getConnection();
+            conn.setAutoCommit(false);
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, model.getId());
+            ps.executeUpdate();
+
+            sql = "DELETE Attandance WHERE sesid = ?";
+            PreparedStatement psDelete = conn.prepareStatement(sql);
+            psDelete.setInt(1, model.getId());
+            psDelete.executeUpdate();
+
+            for (Attandance att : model.getAttandances()) {
+                sql = "INSERT INTO [Attandance]\n"
+                        + "           ([sesid]\n"
+                        + "           ,[stdid]\n"
+                        + "           ,[present]\n"
+                        + "           ,[description]\n"
+                        + "           ,[record_time])\n"
+                        + "     VALUES\n"
+                        + "           (?\n"
+                        + "           ,?\n"
+                        + "           ,?\n"
+                        + "           ,?\n"
+                        + "           ,GETDATE())";
+                PreparedStatement psInsert = conn.prepareStatement(sql);
+                psInsert.setInt(1, model.getId());
+                psInsert.setInt(2, att.getStudent().getId());
+                psInsert.setBoolean(3, att.isPresent());
+                psInsert.setString(4, att.getDescription());
+                psInsert.executeUpdate();
+            }
+            conn.commit();
+
+        } catch (Exception ex) {
+            Logger.getLogger(SessionDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+    
+    
+    public static void main(String[] args) {
+        Session ses = new SessionDAO().getSessionForAttending(1);
+        if (ses == null) {
+            System.out.println("no");
+        }
+        System.out.println(ses.getAttandances().size());
+        System.out.println(ses.getSes());
+        for (Attandance a : ses.getAttandances()) {
+            System.out.println(a.toString());
+        }
 
     }
 }

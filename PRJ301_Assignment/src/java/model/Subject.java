@@ -13,8 +13,19 @@ import java.util.ArrayList;
 public class Subject {
     private int id;
     private String name;
+    private String fullName;
     private ArrayList<Group> groups = new ArrayList<>();
 
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    
+    
     public int getId() {
         return id;
     }
