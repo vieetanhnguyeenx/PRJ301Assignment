@@ -57,6 +57,18 @@ public class Attandance {
         this.recordTime = recordTime;
     }
     
+    public int isPresentInterger() {
+        int a;
+        if(present == true && recordTime != null && session.getAttandated() == true) {
+            a = 1;
+        } else if (present == false && recordTime != null && session.getAttandated() == true) {
+            a = 0;
+        } else {
+            a = -1;
+        }
+        return a;
+    }
+    
     public String isPresentString() {
         String s;
         if(present == true && recordTime != null && session.getAttandated() == true) {

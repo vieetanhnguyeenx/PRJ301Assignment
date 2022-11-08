@@ -19,13 +19,12 @@
         <h1>FPT University Academic Portal</h1>
         <hr style="border-top: 1px solid black;">
         <div class="p-3 mb-2 bg-secondary text-white">
-            <a class="btn btn-success" href="#" role="button">Anhnvhe163837</a>
-            <a class="btn btn-success" href="#" role="button">Logout</a>
+            <a class="btn btn-success" href="#" role="button">${sessionScope.account.username}</a>
+            <a class="btn btn-success" href="logout" role="button">Logout</a>
         </div>
         <div style="margin-top: 20px;">
-            <a class="p-3 mb-2 bg-primary text-white" href="#">ScheduleOfWeek</a>
-            <a class="p-3 mb-2 bg-primary text-white" href="#">ViewAttendstudent</a>
-            <a class="p-3 mb-2 bg-primary text-white" href="#">ViewAttendstudent</a>
+            <a class="p-3 mb-2 bg-primary text-white" href="lecturer-timetable">Time Table</a>
+            <a class="p-3 mb-2 bg-primary text-white" href="attendance_report_for_lecture">Attendent Report</a>
         </div>
 
     </div>

@@ -366,12 +366,32 @@ public class SessionDAO {
         return list;
     }
 
+    public ArrayList<Session> getAllSessionForLecturer(int lid) {
+        ArrayList<Session> list = new ArrayList<>();
+        try {
+            String sql = "select ses.sesid from Lecturer l join [Group] g on g.lid = l.lid\n"
+                    + "join [Session] ses on ses.gid = g.gid and l.lid = ses.lid\n"
+                    + "where l.lid = ?";
+            Connection conn = new DBContext().getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, lid);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {                
+                Session s = new Session();
+                s.setId(rs.getInt("sesid"));
+                list.add(s);
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(SessionDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
+    }
+
     public static void main(String[] args) {
         ArrayList<Session> list = new SessionDAO().getAllSessionDate(1, 1, 1);
         for (Session s : list) {
             System.out.println(s.getDate());
         }
-        
 
     }
 }

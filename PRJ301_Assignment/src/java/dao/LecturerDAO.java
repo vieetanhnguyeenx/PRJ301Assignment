@@ -18,6 +18,7 @@ import model.Lecturer;
  * @author Admin
  */
 public class LecturerDAO {
+
     public ArrayList<Lecturer> getAllLec() {
         ArrayList<Lecturer> list = new ArrayList<>();
         try {
@@ -25,7 +26,7 @@ public class LecturerDAO {
             Connection conn = new DBContext().getConnection();
             PreparedStatement ps = conn.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
-            while (rs.next()) {                
+            while (rs.next()) {
                 Lecturer l = new Lecturer();
                 l.setId(rs.getInt(1));
                 l.setName(rs.getString(2));
@@ -38,16 +39,18 @@ public class LecturerDAO {
         }
         return list;
     }
-    
-    public Lecturer getLecturerById(int id) {
+
+    public Lecturer getLecturerByIdAndLogin(int id, String username) {
         Lecturer l = new Lecturer();
         try {
-            String sql = "select lid, lname, [login], email  from Lecturer where lid = ?";
+            String sql = "select lid, lname, [login], email from Lecturer \n"
+                    + "where lid = 1 and [login] = 'sont5' ";
             Connection conn = new DBContext().getConnection();
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, id);
+            ps.setString(2, username);
             ResultSet rs = ps.executeQuery();
-            if (rs.next()) {                
+            if (rs.next()) {
                 l.setId(rs.getInt(1));
                 l.setName(rs.getString(2));
                 l.setLogin(rs.getString(3));
@@ -58,5 +61,25 @@ public class LecturerDAO {
         }
         return l;
     }
-    
+
+    public Lecturer getLecturerById(int id) {
+        Lecturer l = new Lecturer();
+        try {
+            String sql = "select lid, lname, [login], email  from Lecturer where lid = ?";
+            Connection conn = new DBContext().getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                l.setId(rs.getInt(1));
+                l.setName(rs.getString(2));
+                l.setLogin(rs.getString(3));
+                l.setEmail(rs.getString(4));
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(LecturerDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return l;
+    }
+
 }

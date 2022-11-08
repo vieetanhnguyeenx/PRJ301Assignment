@@ -172,7 +172,7 @@ public class StudentDAO {
     }
 
     public ArrayList<Student> getAllAttendent(int lid, int gid, int tid) {
-        ArrayList<Student>  list = new ArrayList<>();
+        ArrayList<Student> list = new ArrayList<>();
         try {
             String sql = "select s.stdid, s.stdname, s.[login],\n"
                     + "ses.sesid, ses.[date], ses.[index], ses.attanded,\n"
@@ -206,10 +206,10 @@ public class StudentDAO {
             ps.setInt(1, lid);
             ps.setInt(2, gid);
             ps.setInt(3, tid);
-            ResultSet rs  = ps.executeQuery();
+            ResultSet rs = ps.executeQuery();
             Student s = null;
-            while (rs.next()) {                
-                if (s == null ) {
+            while (rs.next()) {
+                if (s == null) {
                     s = new Student();
                     s.setId(rs.getInt("stdid"));
                     s.setName(rs.getString("stdname"));
@@ -343,6 +343,32 @@ public class StudentDAO {
         return null;
     }
 
+    public Student getStudentByUserNameAndId(int id, String username) {
+        Student s = new Student();
+        try {
+            String sql = "select stdid, stdname, login, imgUrl, email, phone, gender, dob from Student\n"
+                    + "where stdid = ? and [login] = ?";
+            Connection conn = new DBContext().getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, id);
+            ps.setString(2, username);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                s.setId(rs.getInt("stdid"));
+                s.setName(rs.getString("stdname"));
+                s.setLogin(rs.getString("login"));
+                s.setImgUrl(rs.getString("imgUrl"));
+                s.setEmail(rs.getString("email"));
+                s.setPhone(rs.getString("phone"));
+                s.setGender(rs.getBoolean("gender"));
+                s.setDob(rs.getDate("dob").toLocalDate());
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(StudentDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return s;
+    }
+
     public static void main(String[] args) {
         ArrayList<Student> list = new StudentDAO().getAllAttendent(1, 1, 1);
         for (Student s : list) {
@@ -351,7 +377,7 @@ public class StudentDAO {
                 System.out.println(a.toString());
             }
         }
-        
+
     }
 
 }

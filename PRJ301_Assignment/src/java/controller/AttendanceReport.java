@@ -31,10 +31,13 @@ public class AttendanceReport extends BaseRoleController {
         String rawTermId = request.getParameter("termid");
         String rawGroupId = request.getParameter("gid");
         int studentId = account.getId();
-        int groupId = Integer.parseInt(rawGroupId);
-        int termId = Integer.parseInt(rawTermId);
+        int termId = -1;
+        int groupId = -1;
+        if (rawTermId != null) {
+            groupId = Integer.parseInt(rawGroupId);
+            termId = Integer.parseInt(rawTermId);
+        }
 
-        
         ArrayList<Term> t = new TermDAO().getAllTerm();
         if (t.isEmpty() != true) {
             request.setAttribute("term", t);
@@ -50,11 +53,11 @@ public class AttendanceReport extends BaseRoleController {
         if (s != null) {
             request.setAttribute("attend", s.getAttandances());
         }
-
+        Student student = new StudentDAO().getStudentByUserNameAndId(account.getId(), account.getUsername());
+        request.setAttribute("student", student);
         request.getRequestDispatcher("attendance_report_student.jsp").forward(request, response);
 
     }
-
 
     @Override
     public String getServletInfo() {
