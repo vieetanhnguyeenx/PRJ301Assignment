@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import model.Account;
+import model.Attandance;
 import model.Group;
 import model.Student;
 import model.Term;
