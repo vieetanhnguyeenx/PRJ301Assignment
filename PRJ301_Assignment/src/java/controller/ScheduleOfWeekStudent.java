@@ -16,6 +16,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import model.Account;
 import model.Session;
 import model.Student;
 import model.TimeSlot;
@@ -24,13 +25,13 @@ import model.TimeSlot;
  *
  * @author Admin
  */
-public class ScheduleOfWeekStudent extends HttpServlet {
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+public class ScheduleOfWeekStudent extends BaseRoleController {
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response, Account account)
             throws ServletException, IOException {
         String rawSid = request.getParameter("sid");
         String rawFrom = request.getParameter("from");
         String rawTo = request.getParameter("to");
-        int sid = Integer.parseInt(rawSid);
+        int sid = account.getId();
         LocalDate from = null;
         LocalDate to = null;
         
@@ -60,21 +61,20 @@ public class ScheduleOfWeekStudent extends HttpServlet {
         
     }
 
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
 
     @Override
     public String getServletInfo() {
         return "Short description";
+    }
+
+    @Override
+    protected void processPost(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
+        processRequest(req, resp, account);
+    }
+
+    @Override
+    protected void processGet(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
+        processRequest(req, resp, account);
     }
 
 }

@@ -16,6 +16,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import model.Account;
 import model.Lecturer;
 import model.Session;
 import model.TimeSlot;
@@ -24,13 +25,13 @@ import model.TimeSlot;
  *
  * @author Admin
  */
-public class LecturerTimetable extends HttpServlet {
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+public class LecturerTimetable extends BaseRoleController {
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response, Account account)
     throws ServletException, IOException {
         String rawLid = request.getParameter("lid");
         String rawFrom = request.getParameter("from");
         String rawTo = request.getParameter("to");
-        int lid = Integer.parseInt(rawLid);
+        int lid = account.getId();
         LocalDate from = null;
         LocalDate to = null;
         
@@ -62,23 +63,16 @@ public class LecturerTimetable extends HttpServlet {
         
     }
     
- 
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
 
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
+    protected void processPost(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
+        processRequest(req, resp, account);
     }
 
     @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
+    protected void processGet(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
+        processRequest(req, resp, account);
+    }
 
 }

@@ -338,18 +338,40 @@ public class SessionDAO {
         }
 
     }
-    
-    
+
+    public ArrayList<Session> getAllSessionDate(int gid, int termid, int lid) {
+        ArrayList<Session> list = new ArrayList<>();
+        try {
+            String sql = "select s.sesid, s.[date], s.[index]\n"
+                    + "from [Group] g join [Session] s on g.gid = s.gid\n"
+                    + "where g.gid = ? \n"
+                    + "and g.termid = ?\n"
+                    + "and g.lid = ?";
+            Connection conn = new DBContext().getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, gid);
+            ps.setInt(2, termid);
+            ps.setInt(3, lid);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Session ses = new Session();
+                ses.setId(rs.getInt("sesid"));
+                ses.setDate(rs.getDate("date").toLocalDate());
+                ses.setIndex(rs.getInt("index"));
+                list.add(ses);
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(SessionDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
+    }
+
     public static void main(String[] args) {
-        Session ses = new SessionDAO().getSessionForAttending(1);
-        if (ses == null) {
-            System.out.println("no");
+        ArrayList<Session> list = new SessionDAO().getAllSessionDate(1, 1, 1);
+        for (Session s : list) {
+            System.out.println(s.getDate());
         }
-        System.out.println(ses.getAttandances().size());
-        System.out.println(ses.getSes());
-        for (Attandance a : ses.getAttandances()) {
-            System.out.println(a.toString());
-        }
+        
 
     }
 }

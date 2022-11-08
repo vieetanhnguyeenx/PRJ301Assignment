@@ -58,7 +58,11 @@
                                         (${ss.isAttended()}) <br/>
                                         ${s.description}
                                     </c:if>
-                                </c:forEach>                                       
+
+                                </c:forEach>
+                                <c:if test="${helper.isEqual(d, ss.date) != 1 and ss.timeslot.id != s.id}">
+                                    --
+                                </c:if>
                             </td>
                         </c:forEach>
                     </tr>

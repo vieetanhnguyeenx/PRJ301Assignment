@@ -5,6 +5,7 @@
 package controller;
 
 import dao.GroupDAO;
+import dao.SessionDAO;
 import dao.StudentDAO;
 import dao.TermDAO;
 import java.io.IOException;
@@ -16,6 +17,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import model.Account;
 import model.Group;
+import model.Session;
 import model.Student;
 import model.Term;
 
@@ -23,42 +25,34 @@ import model.Term;
  *
  * @author Admin
  */
-public class AttendanceReport extends BaseRoleController {
+public class AttendanceReportForLecture extends BaseRoleController {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response, Account account)
             throws ServletException, IOException {
-        String rawStudentId = request.getParameter("stid");
+        response.setContentType("text/html;charset=UTF-8");
+        String rawLecId = request.getParameter("lid");
         String rawTermId = request.getParameter("termid");
         String rawGroupId = request.getParameter("gid");
-        int studentId = account.getId();
-        int groupId = Integer.parseInt(rawGroupId);
+        
+        int lectureId = account.getId();
         int termId = Integer.parseInt(rawTermId);
-
+        int groupId = Integer.parseInt(rawGroupId);
         
         ArrayList<Term> t = new TermDAO().getAllTerm();
-        if (t.isEmpty() != true) {
+        if(t.isEmpty() != true) {
             request.setAttribute("term", t);
         }
-        request.setAttribute("studentid", studentId);
-
-        if (termId == -1) {
-            termId = t.get(t.size() - 1).getTearmId();
-        }
-        ArrayList<Group> g = new GroupDAO().getGroupsForStudent(studentId, termId);
+        request.setAttribute("lid", lectureId);
+        
+        ArrayList<Group> g = new GroupDAO().getAllGroupForLecture(lectureId, termId);
         request.setAttribute("group", g);
-        Student s = new StudentDAO().getAttandance(studentId, termId, groupId);
-        if (s != null) {
-            request.setAttribute("attend", s.getAttandances());
-        }
-
-        request.getRequestDispatcher("attendance_report_student.jsp").forward(request, response);
-
-    }
-
-
-    @Override
-    public String getServletInfo() {
-        return "Short description";
+        
+        ArrayList<Session> sesionDate = new SessionDAO().getAllSessionDate(groupId, termId, lectureId);
+        request.setAttribute("date", sesionDate);
+        
+        ArrayList<Student> s = new StudentDAO().getAllAttendent(lectureId, groupId, termId);
+        request.setAttribute("student", s);
+        request.getRequestDispatcher("attendance_report_lecturer.jsp").forward(request, response);
     }
 
     @Override

@@ -16,6 +16,26 @@
         <servlet-name>AttendanceReport</servlet-name>
         <servlet-class>controller.AttendanceReport</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AttendanceReportForLecture</servlet-name>
+        <servlet-class>controller.AttendanceReportForLecture</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>StudentHome</servlet-name>
+        <servlet-class>controller.StudentHome</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LecturerHome</servlet-name>
+        <servlet-class>controller.LecturerHome</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoginController</servlet-name>
+        <servlet-class>controller.LoginController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LogoutController</servlet-name>
+        <servlet-class>controller.LogoutController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LecturerTimetable</servlet-name>
         <url-pattern>/lecturer-timetable</url-pattern>
@@ -31,6 +51,26 @@
     <servlet-mapping>
         <servlet-name>AttendanceReport</servlet-name>
         <url-pattern>/attendance_report</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AttendanceReportForLecture</servlet-name>
+        <url-pattern>/attendance_report_for_lecture</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StudentHome</servlet-name>
+        <url-pattern>/student_home</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LecturerHome</servlet-name>
+        <url-pattern>/lecturer_home</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoginController</servlet-name>
+        <url-pattern>/login</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LogoutController</servlet-name>
+        <url-pattern>/logout</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

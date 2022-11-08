@@ -39,7 +39,7 @@ public class AttendentTaking extends HttpServlet {
         ses.setId(Integer.parseInt(request.getParameter("sesid")));
         String[] stdids = request.getParameterValues("stdid");
         for (String stdid : stdids) {
-            Attandance a =new Attandance();
+            Attandance a = new Attandance();
             Student s = new Student();
             a.setStudent(s);
             a.setDescription(request.getParameter("description"+stdid));
